@@ -48,3 +48,21 @@ set(AMIITOOL_FILES
 )
 add_executable(amiitool ${AMIITOOL_FILES})
 target_link_libraries(amiitool crypto)
+
+# Lua library
+
+set (LUAMIIBO_FILES
+  ${TEST_FILES}
+  include/amiibo_lua.h
+  src/amiibo_lua.c
+)
+
+add_library(luamiibo SHARED ${LUAMIIBO_FILES})
+
+# Location of Proxmark's lua library
+set(PROXMARK_LIBLUA "~/Documents/proxmark3/liblua")
+
+set_property(TARGET luamiibo PROPERTY POSITION_INDEPENDENT_CODE ON)
+# SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -undefined dynamic_lookup")
+target_include_directories(luamiibo PRIVATE ${PROXMARK_LIBLUA})
+target_link_libraries(luamiibo crypto)
